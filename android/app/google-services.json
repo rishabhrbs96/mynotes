@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "683070523628",
+    "project_id": "mynotes-mawai-test2",
+    "storage_bucket": "mynotes-mawai-test2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683070523628:android:5637a014c73fa9a9053dc9",
+        "android_client_info": {
+          "package_name": "com.mawai.test2.mynotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2DrwjOPfwTvcTqVF4mLu8xZUjbpo6zHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
