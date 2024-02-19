@@ -88,7 +88,7 @@ class _LoginViewState extends State<LoginView> {
                   if (context.mounted) {
                     await showErroDialog(
                       context,
-                      'Error: ${e.code}',
+                      'Login failed. Please try again; Error: ${e.code}',
                     );
                   }
                 }
@@ -96,7 +96,7 @@ class _LoginViewState extends State<LoginView> {
                 if (context.mounted) {
                   await showErroDialog(
                     context,
-                    e.toString(),
+                    'Login failed. Please try again; Error: $e',
                   );
                 }
               }
