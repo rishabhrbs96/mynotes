@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mynotes/constants/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -59,12 +60,12 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
+                await AuthService.firebase().logIn(
                   email: email,
                   password: password,
                 );
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false) {
+                final user = AuthService.firebase().currentUser;
+                if (user?.isEmailVerified ?? false) {
                   if (context.mounted) {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       notesRoute,
@@ -72,41 +73,32 @@ class _LoginViewState extends State<LoginView> {
                     );
                   }
                 } else {
-                  await user?.sendEmailVerification();
+                  await AuthService.firebase().sendEmailVerificaiton();
                   if (context.mounted) {
                     Navigator.of(context).pushNamed(
                       verifyEmailRoute,
                     );
                   }
                 }
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'invalid-email') {
-                  if (context.mounted) {
-                    await showErroDialog(
-                      context,
-                      'Invalid email',
-                    );
-                  }
-                } else if (e.code == 'invalid-credential') {
-                  if (context.mounted) {
-                    await showErroDialog(
-                      context,
-                      'Invalid Credentials',
-                    );
-                  }
-                } else {
-                  if (context.mounted) {
-                    await showErroDialog(
-                      context,
-                      'Login failed. Please try again; Error: ${e.code}',
-                    );
-                  }
-                }
-              } catch (e) {
+              } on InvalidEmailAuthException {
                 if (context.mounted) {
                   await showErroDialog(
                     context,
-                    'Login failed. Please try again; Error: $e',
+                    'Invalid email',
+                  );
+                }
+              } on InvalidCredentialAuthException {
+                if (context.mounted) {
+                  await showErroDialog(
+                    context,
+                    'Invalid Credentials',
+                  );
+                }
+              } on GenericAuthException {
+                if (context.mounted) {
+                  await showErroDialog(
+                    context,
+                    'Login failed. Please try again',
                   );
                 }
               }
